@@ -11,8 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+    // Middleware global (semua request)
+    $middleware->append(\App\Http\Middleware\LogActivityMiddleware::class);
+
+    // Kalau mau route middleware juga bisa:
+    $middleware->alias([
+        'log.activity' => \App\Http\Middleware\LogActivityMiddleware::class,
+    ]);
     })
+
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
